@@ -23,8 +23,8 @@ public class AtualizacaoService {
 
     public AtualizacaoResponse create(AtualizacaoRequest request) {
 
-        Atualizacao entity = mapper.map(request, Atualizacao.class);
-        entity.setId(null);
+        Atualizacao entity = new Atualizacao();
+        applyRequest(request, entity);
         entity.setOcorrencia(ocorrenciaRepository.findById(request.getOcorrenciaId()).orElseThrow(() -> new NotFoundException("Ocorrência não encontrada.")));
         entity.setConcluida(request.getConcluida() == null ? false : request.getConcluida());
         entity.setTipo(request.getTipo() == null ? TipoAtualizacao.OBSERVACAO : request.getTipo());
@@ -43,8 +43,7 @@ public class AtualizacaoService {
     public AtualizacaoResponse update(Long id, AtualizacaoRequest request) {
         Atualizacao entity = getOrThrow(id);
 
-        mapper.map(request, entity);
-        entity.setId(id);
+        applyRequest(request, entity);
         entity.setOcorrencia(ocorrenciaRepository.findById(request.getOcorrenciaId()).orElseThrow(() -> new NotFoundException("Ocorrência não encontrada.")));
         if (request.getConcluida() == null) entity.setConcluida(false);
         if (request.getTipo() == null) entity.setTipo(TipoAtualizacao.OBSERVACAO);
@@ -57,8 +56,23 @@ public class AtualizacaoService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Atualizacao não encontrado(a)."));
     }
 
+    private void applyRequest(AtualizacaoRequest request, Atualizacao entity) {
+        entity.setDescricao(request.getDescricao());
+        entity.setAutor(request.getAutor());
+        entity.setTipo(request.getTipo() == null ? TipoAtualizacao.OBSERVACAO : request.getTipo());
+        entity.setAnexoUrl(request.getAnexoUrl());
+        entity.setConcluida(request.getConcluida() == null ? false : request.getConcluida());
+    }
+
     private AtualizacaoResponse toResponse(Atualizacao entity) {
-        AtualizacaoResponse response = mapper.map(entity, AtualizacaoResponse.class);
+        AtualizacaoResponse response = new AtualizacaoResponse();
+        response.setId(entity.getId());
+        response.setDescricao(entity.getDescricao());
+        response.setAutor(entity.getAutor());
+        response.setTipo(entity.getTipo());
+        response.setAnexoUrl(entity.getAnexoUrl());
+        response.setConcluida(entity.getConcluida());
+        response.setCriadoEm(entity.getCriadoEm());
         response.setOcorrenciaId(entity.getOcorrencia().getId());
         return response;
     }

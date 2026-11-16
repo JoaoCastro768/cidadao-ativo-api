@@ -25,8 +25,8 @@ public class OcorrenciaService {
 
     public OcorrenciaResponse create(OcorrenciaRequest request) {
 
-        Ocorrencia entity = mapper.map(request, Ocorrencia.class);
-        entity.setId(null);
+        Ocorrencia entity = new Ocorrencia();
+        applyRequest(request, entity);
         entity.setCidadao(cidadaoRepository.findById(request.getCidadaoId()).orElseThrow(() -> new NotFoundException("Cidadão não encontrado.")));
         entity.setBairro(bairroRepository.findById(request.getBairroId()).orElseThrow(() -> new NotFoundException("Bairro não encontrado.")));
         entity.setStatus(request.getStatus() == null ? StatusOcorrencia.ABERTA : request.getStatus());
@@ -46,8 +46,7 @@ public class OcorrenciaService {
     public OcorrenciaResponse update(Long id, OcorrenciaRequest request) {
         Ocorrencia entity = getOrThrow(id);
 
-        mapper.map(request, entity);
-        entity.setId(id);
+        applyRequest(request, entity);
         entity.setCidadao(cidadaoRepository.findById(request.getCidadaoId()).orElseThrow(() -> new NotFoundException("Cidadão não encontrado.")));
         entity.setBairro(bairroRepository.findById(request.getBairroId()).orElseThrow(() -> new NotFoundException("Bairro não encontrado.")));
         if (request.getStatus() == null) entity.setStatus(StatusOcorrencia.ABERTA);
@@ -61,8 +60,22 @@ public class OcorrenciaService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Ocorrencia não encontrado(a)."));
     }
 
+    private void applyRequest(OcorrenciaRequest request, Ocorrencia entity) {
+        entity.setTitulo(request.getTitulo());
+        entity.setDescricao(request.getDescricao());
+        entity.setCategoria(request.getCategoria());
+        entity.setStatus(request.getStatus() == null ? StatusOcorrencia.ABERTA : request.getStatus());
+    }
+
     private OcorrenciaResponse toResponse(Ocorrencia entity) {
-        OcorrenciaResponse response = mapper.map(entity, OcorrenciaResponse.class);
+        OcorrenciaResponse response = new OcorrenciaResponse();
+        response.setId(entity.getId());
+        response.setTitulo(entity.getTitulo());
+        response.setDescricao(entity.getDescricao());
+        response.setCategoria(entity.getCategoria());
+        response.setStatus(entity.getStatus());
+        response.setCriadoEm(entity.getCriadoEm());
+        response.setAtualizadoEm(entity.getAtualizadoEm());
         response.setCidadaoId(entity.getCidadao().getId());
         response.setBairroId(entity.getBairro().getId());
         return response;
