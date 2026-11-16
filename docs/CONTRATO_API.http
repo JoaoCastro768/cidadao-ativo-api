@@ -1,0 +1,43 @@
+@base=http://localhost:8080
+
+### Swagger
+GET {{base}}/
+
+### Health
+GET {{base}}/actuator/health
+
+### Criar cidadao
+POST {{base}}/api/v1/cidadaos
+Content-Type: application/json
+
+{"nome":"Maria Exemplo","email":"maria@example.org","telefone":"11999990000","ativo":true}
+
+### Criar bairro
+POST {{base}}/api/v1/bairros
+Content-Type: application/json
+
+{"nome":"Mooca","cidade":"São Paulo","uf":"SP","cepReferencia":"03122000","ativo":true}
+
+### Ocorrencia (ajustar IDs)
+POST {{base}}/api/v1/ocorrencias
+Content-Type: application/json
+
+{"titulo":"Poste apagado","descricao":"Exemplo acadêmico de observação","categoria":"ILUMINACAO","status":"ABERTA","cidadaoId":1,"bairroId":1}
+
+### Acompanhamento (ajustar ID)
+POST {{base}}/api/v1/atualizacoes
+Content-Type: application/json
+
+{"descricao":"Registro em acompanhamento","autor":"Maria Exemplo","tipo":"OBSERVACAO","ocorrenciaId":1,"concluida":false}
+
+### Listar ocorrencias
+GET {{base}}/api/v1/ocorrencias
+
+### Buscar ocorrencia
+GET {{base}}/api/v1/ocorrencias/1
+
+### Atualizar ocorrencia
+PUT {{base}}/api/v1/ocorrencias/1
+Content-Type: application/json
+
+{"titulo":"Poste apagado","descricao":"Conclusao de exemplo","categoria":"ILUMINACAO","status":"CONCLUIDA","cidadaoId":1,"bairroId":1}

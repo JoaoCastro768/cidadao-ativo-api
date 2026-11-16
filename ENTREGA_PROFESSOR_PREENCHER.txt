@@ -1,0 +1,13 @@
+GLOBAL SOLUTION 2026.2 - 3SIR
+Disciplina: Microservice and Web Engineering & IT Services
+Professor: Antonio Carlos de Lima Júnior
+
+INTEGRANTE
+Nome: João Vitor Pedreira de Castro
+RM: 554628
+
+GITHUB PUBLICO: [PREENCHER_APOS_PUBLICACAO]
+API NO AZURE: [PREENCHER_APOS_IMPLANTACAO]
+DOCKER HUB: [PREENCHER_APOS_PUBLICACAO]
+
+OBSERVACAO: Substituir todos os campos entre colchetes somente por links realmente verificados. Entregar o TXT no Portal do Aluno.
